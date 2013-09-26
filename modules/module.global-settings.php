@@ -105,7 +105,7 @@ if (is_admin())
 			<a  id='tabs-<?php echo $key; ?>' class="wp-cta-nav-tab nav-tab nav-tab-special<?php echo $active_tab == $key ? '-active' : '-inactive'; ?>"><?php echo $data['label']; ?></a> 
 			<?php
 		}
-		echo "</h2><div class='wp-cta-settings-tab-sidebar'><div class='wp-cta-sidebar-settings'><h2 style='font-size:17px;'>Like the Plugin? Leave us a review</h2><center><a class='review-button' href='http://wordpress.org/support/view/plugin-reviews/landing-pages?rate=5#postform' target='_blank'>Leave a Review</a></center><small>Reviews help constantly improve the plugin & keep us motivated! <strong>Thank you for your support!</strong></small></div><div class='wp-cta-sidebar-settings'><h2>Help keep the plugin up to date, awesome & free!</h2><form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_top'>
+		echo "</h2><div class='wp-cta-settings-tab-sidebar'><div class='wp-cta-sidebar-settings'><h2 style='font-size:17px;'>Like the Plugin? Leave us a review</h2><center><a class='review-button' href='http://wordpress.org/support/view/plugin-reviews/cta?rate=5#postform' target='_blank'>Leave a Review</a></center><small>Reviews help constantly improve the plugin & keep us motivated! <strong>Thank you for your support!</strong></small></div><div class='wp-cta-sidebar-settings'><h2>Help keep the plugin up to date, awesome & free!</h2><form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_top'>
 			<input type='hidden' name='cmd' value='_s-xclick'>
 			<input type='hidden' name='hosted_button_id' value='GKQ2BR3RKB3YQ'>
 			<input type='image' src='https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif' border='0' name='submit' alt='PayPal - The safer, easier way to pay online!'>
@@ -130,21 +130,7 @@ if (is_admin())
 		?>
 		<div id="wp-cta-additional-resources" class="clear">
 			<hr>
-		<div id="more-templates">
-			<center>
-			<a href="http://www.inboundnow.com/landing-pages/downloads/category/templates/" target="_blank"><img src="<?php echo WP_CTA_URLPATH;?>/images/templates-image.png"></a>
-			
-			</center>
-		</div>
-		<div id="more-addons">
-			<center>
-			<a href="http://www.inboundnow.com/landing-pages/downloads/category/add-ons/" target="_blank"><img src="<?php echo WP_CTA_URLPATH;?>/images/add-on-image.png"></a>
-		</center>
-		</div>
-		<div id="custom-templates">
-			<center><a href="http://www.inboundnow.com/landing-pages/custom-wordpress-landing-page-setup/" target=="_blank"><img src="<?php echo WP_CTA_URLPATH;?>/images/custom-setup-image.png"></a>
-			</center>
-		</div>
+	
 		</div>
 		<div class="clear" id="php-sql-wp-cta-version">
 		 <h3>Installation Status</h3>
