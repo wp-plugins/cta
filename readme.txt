@@ -31,7 +31,7 @@ Calls to action are an ideal way to convert more of your passive website visitor
 
 = Developers & Designers =
 
-We built the calls to action plugin as a framework! Need A/B testing out of the box implemented for your existing designs? Use WordPress Landing Pages to quickly spin up new landing pages that have all the functionality your clients will need.
+We built the calls to action plugin as a framework! Need A/B testing out of the box implemented for your existing designs? Use WordPress Calls to Action to quickly spin up new calls to action that have all the functionality your clients will need.
 
 You can quickly take your existing designs and implement them using our <a href="http://docs.inboundnow.com/landing-pages/dev">templating framework</a>.
 
