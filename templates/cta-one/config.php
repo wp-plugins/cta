@@ -3,7 +3,7 @@
 * WordPress: WP Calls To Action Template Config File
 * Template Name:  CTA One
 * @package  WordPress Calls to Action
-* @author   InboundNow
+* @author 	InboundNow
 */
 
 do_action('wp_cta_global_config'); // The wp_cta_global_config function is for global code added by 3rd party extensions
@@ -14,11 +14,12 @@ $key = wp_cta_get_parent_directory(dirname(__FILE__));
 
 $wp_cta_data[$key]['info'] = 
 array(
-    'version' => "1.0", // Version Number
-    'label' => "CTA One", // Nice Name
-    'category' => 'Box', // Template Category
-    'demo' => 'http://demo.inboundnow.com/go/demo-template-preview/', // Demo Link
-    'description'  => 'CTA 1' // template description
+	'data_type' => 'template', // Template Data Type
+	'version' => "1.0", // Version Number
+	'label' => "CTA One", // Nice Name
+	'category' => 'Box', // Template Category
+	'demo' => 'http://demo.inboundnow.com/go/demo-template-preview/', // Demo Link
+	'description'  => 'CTA 1' // template description
 );
 
 // Define Meta Options for template

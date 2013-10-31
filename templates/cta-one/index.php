@@ -103,9 +103,9 @@ $blue = $RBG_array["b"];
         }
 </style>
 <?php /* Load all functions hooked to wp_cta_head including global js and global css */
-            wp_head(); // Load Regular WP Head
-            do_action('wp_cta_head'); // Load Custom Landing Page Specific Header Items
-        ?>
+			wp_head(); // Load Regular WP Head
+			do_action('wp_cta_head'); // Load Custom Landing Page Specific Header Items
+		?>
 
 </head>
 <body>
