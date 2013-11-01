@@ -190,14 +190,7 @@ if ($headline_color != "") {
 
 <?php
 $title = get_the_title( $post_id );
-echo do_shortcode( '[inbound_form name="'.$title.'" redirect="'.$redirect.'" notify="'.$email.'" layout="horizontal" labels="top" submit="'.$submit_button_text.'" ]
-
-[inbound_field label="Name" type="text" required="0" ]
-
-[inbound_field label="Email" type="text" required="1" ]
-
-[/inbound_form]' );?>
-<?php echo do_shortcode( '[inbound_form fields="Name, Email" required="" layout="horizontal" redirect="'.$redirect.'" button_text="'.$submit_button_text.'"]' );?>
+echo do_shortcode( '[inbound_form name="'.$title.'" redirect="'.$redirect.'" notify="'.$email.'" layout="horizontal" labels="top" submit="'.$submit_button_text.'" ][inbound_field label="Name" type="text" required="0" ][inbound_field label="Email" type="text" required="1" ][/inbound_form]' );?>
 
   </div>
 
