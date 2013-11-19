@@ -16,9 +16,9 @@ array(
 	'data_type' => 'template', // Template Data Type
 	'version' => "1.0", // Version Number
 	'label' => "Popup Ebook", // Nice Name
-	'category' => 'Popup', // Template Category
+	'category' => 'Popup, Wide', // Template Category
 	'demo' => 'http://demo.inboundnow.com/go/demo-template-preview/', // Demo Link
-	'description'  => 'This is the blank template for any image/html/shortcode CTA' // template description
+	'description'  => 'This is a cta that works great as a popup but can also be placed anywhere on your site' // template description
 );
 
 
@@ -31,7 +31,7 @@ array(
         'description' => "<p>This is a popup call to action used to promote something. Use the main hero image and the main content area to create the copy for your popup</p>", // what field does
         'id' => 'description', // metakey. $key Prefix is appended from parent in array loop
         'type'  => 'description-block', // metafield type
-        'default'  => '<p>This is a popup call to action used to promote something. Use the main hero image and the main content area to create your popup</p>', // default content
+        'default'  => '<p>This is a popup call to action used to promote something. Use the main hero image and the main content area to create your popup. You can use this call to action as a non popup as well. Recommended height 400px and width 660px</p>', // default content
         'context'  => 'normal' // Context in screen (advanced layouts in future)
         ),
     array(
@@ -108,5 +108,12 @@ array(
         'id'  => 'email',
         'type'  => 'text',
         'default'  => 'youremail@email.com'
-        )
+        ),
+      array(
+        'label' => 'turn-off-editor',
+        'description' => "Turn off editor",
+        'id'  => 'turn-off-editor',
+        'type'  => 'custom-css',
+        'default'  => '.calc.button-secondary {display:none !important;}'
+        ),
     );
