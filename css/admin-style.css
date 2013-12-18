@@ -7,6 +7,7 @@
 	font-weight: normal;
 	font-style: normal;
 }
+
 #adminmenu .menu-icon-wp-call-to-action div.wp-menu-image:before {
 	font-family: "FontAwesome" !important;
 	content: "\f05b";
