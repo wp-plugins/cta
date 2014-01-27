@@ -21,18 +21,29 @@ define('WP_CTA_UPLOADS_URLPATH', $uploads['baseurl'].'/wp-calls-to-action/templa
 
 
 /* Inbound Core Shared Files. */
-add_action( 'plugins_loaded', 'inbound_load_shared' );
+add_action( 'plugins_loaded', 'inbound_load_shared' , 12);
 
 function inbound_load_shared(){
+	/* Check if Shared Files Already Loaded */
+	if (defined('INBOUDNOW_SHARED'))
+		return;
+	
+	/* Define Shared Constant for Load Prevention*/
+	define('INBOUDNOW_SHARED','loaded');
+		
 	include_once('shared/tracking/store.lead.php'); // Lead Storage from cta
 	include_once('shared/classes/form.class.php');  // Mirrored forms
+	include_once('shared/classes/menu.class.php');  // Inbound Marketing Menu
+	include_once('shared/classes/feedback.class.php');  // Inbound Feedback Form
+	
+	include_once('shared/inbound-shortcodes/inbound-shortcodes.php');  // Shared Shortcodes
+	include_once('shared/inboundnow/inboundnow.extend.php'); // Legacy
+	include_once('shared/inboundnow/inboundnow.extension-licensing.php'); // Inboundnow Package Licensing
+	include_once('shared/inboundnow/inboundnow.extension-updating.php'); // Inboundnow Package Updating
+	include_once('shared/inboundnow/inboundnow.global-settings.php'); // Inboundnow Global Settings
+	include_once('shared/metaboxes/template.metaboxes.php');  // Shared Shortcodes
 
 }
-
-include_once('shared/inbound-shortcodes/inbound-shortcodes.php');  // Shared Shortcodes
-include_once('shared/classes/menu.class.php');  // Inbound Marketing Menu
-include_once('shared/classes/feedback.class.php');  // Inbound Feedback Form
-
 /**
  * LOAD BACKEND ONLY FILES
  */
@@ -87,7 +98,6 @@ if (!function_exists('inbound_include_template_functions'))
 if (is_admin())
 {
 	//include additional metaboxes
-	include_once('shared/metaboxes/template.metaboxes.php');  // Shared Shortcodes
 	include_once('load.extensions.php');
 	include_once('modules/module.metaboxes.php');
 }
