@@ -56,6 +56,14 @@ if (is_admin())
 				'default'  => '',
 				'options' => null
 			),
+			array(
+				'id'  => 'inbound_compatibility_mode',
+				'label' => 'Turn on compability mode',
+				'description' => "<p>This option turns on compability mode for the inbound now plugins. This is typically used if you are experiencing bugs caused by third party plugin conflicts.</p>",
+				'type'  => 'radio',
+				'default'  => '0',
+				'options' => array('1'=>'On','0'=>'Off')
+			),
 		);
 
 
@@ -346,8 +354,22 @@ if (is_admin())
 				}
 				elseif (!$new && $field['old_value'])
 				{
-					//echo "here: $key <br>";
-					$bool = delete_option($field['id']);
+					if ($field['type']=='license-key')
+					{
+						$master_key = get_option('inboundnow_master_license_key' , '');
+						if ($master_key)
+						{
+							$bool = update_option($field['id'], $master_key );
+						}
+						else
+						{
+							update_option($field['id'], '' );
+						}
+					}
+					else
+					{
+						$bool = update_option($field['id'],$field['default']);
+					}
 				}
 				else
 				{
@@ -566,5 +588,46 @@ if (is_admin())
 			echo '</td></tr>';
 		} // end foreach
 		echo '</table>'; // end table
+	}
+
+	function wp_cta_check_license_status($field)
+	{
+		//print_r($field);exit;
+		$date = date("Y-m-d");
+		$cache_date = get_option($field['id']."-expire");
+		$license_status = get_option('wp_cta_license_status-'.$field['slug']);
+
+		if (isset($cache_date)&&($date<$cache_date)&&$license_status=='valid')
+		{
+			return "valid";
+		}
+
+		$license_key = get_option($field['id']);
+
+		$api_params = array(
+			'edd_action' => 'check_license',
+			'license' => $license_key,
+			'item_name' => urlencode( $field['slug'] )
+		);
+		//print_r($api_params);
+
+		// Call the custom API.
+		$response = wp_remote_get( add_query_arg( $api_params, WP_CTA_STORE_URL ), array( 'timeout' => 15, 'sslverify' => false ) );
+		//print_r($response);
+
+		if ( is_wp_error( $response ) )
+			return false;
+
+		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+		//echo $license_data;exit;
+
+		if( $license_data->license == 'valid' ) {
+			$newDate = date('Y-m-d', $license_data->expires );
+			update_option($field['id']."-expire", $newDate);
+			return 'valid';
+			// this license is still valid
+		} else {
+			return 'invalid';
+		}
 	}
 }
