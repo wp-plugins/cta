@@ -1,19 +1,19 @@
 jQuery(document).ready(function ($) {
 
-	jQuery('#templates-container').isotope();
-	// jQuery("#content_ifr").contents().find("img").width(); // image width
 
-	var test = jQuery("#wp_cta_metabox_select_template");
+    // jQuery("#content_ifr").contents().find("img").width(); // image width
 
-	jQuery("#postdivrich").before(test);
+    var test = jQuery("#wp_cta_metabox_select_template");
 
-	// filter items when filter link is clicked
-	jQuery('#template-filter a').click(function(){
-		var selector = jQuery(this).attr('data-filter');
-		//alert(selector);
-		jQuery('#templates-container').isotope({ filter: selector });
-		return false;
-	});
+    jQuery("#postdivrich").before(test);
+
+    // filter items when filter link is clicked
+    jQuery('#template-filter a').click(function(){
+        var selector = jQuery(this).attr('data-filter');
+        //alert(selector);
+
+        return false;
+    });
 
     $(".inbound-multi-select").select2({
                                 placeholder: "Select one or more calls to action to rotate through",
@@ -81,10 +81,10 @@ jQuery(document).ready(function ($) {
 
     // Fix inactivate theme display
     jQuery("#template-box a").live('click', function () {
-		setTimeout(function() {
-			jQuery('#TB_window iframe').contents().find("#customize-controls").hide();
-			jQuery('#TB_window iframe').contents().find(".wp-full-overlay.expanded").css("margin-left", "0px");
-		}, 600);
+        setTimeout(function() {
+            jQuery('#TB_window iframe').contents().find("#customize-controls").hide();
+            jQuery('#TB_window iframe').contents().find(".wp-full-overlay.expanded").css("margin-left", "0px");
+        }, 600);
     });
 
     var calc = jQuery(".calc.button-secondary");
@@ -163,63 +163,63 @@ jQuery(document).ready(function ($) {
         var label = jQuery(this).attr('label');
         var selected_template_id = "#" + template;
         var currentlabel = jQuery(".currently_selected").show();
-		var current_template = jQuery("input#wp_cta_select_template ").val();
+        var current_template = jQuery("input#wp_cta_select_template ").val();
         var current_template_meta = "#wp_cta_" + current_template + "_custom_meta_box";
         var current_template_h3 = "#wp_cta_" + current_template + "_custom_meta_box h3";
         var current_template_div = "#wp_cta_" + current_template + "_custom_meta_box .handlediv";
-		var open_variation = jQuery("#open_variation").val();
+        var open_variation = jQuery("#open_variation").val();
 
-		if (open_variation>0)
-		{
-			var variation_tag = "-"+open_variation;
-		}
-		else
-		{
-			var variation_tag = "";
-		}
-		jQuery("#template-box.default_template_highlight").removeClass("default_template_highlight");
+        if (open_variation>0)
+        {
+            var variation_tag = "-"+open_variation;
+        }
+        else
+        {
+            var variation_tag = "";
+        }
+        jQuery("#template-box.default_template_highlight").removeClass("default_template_highlight");
 
         jQuery(selected_template_id).parent().addClass("default_template_highlight").prepend(currentlabel);
         jQuery(".wp-cta-template-selector-container").fadeOut(500,function(){
 
-			jQuery('#template-display-options').fadeOut(500, function(){
-			});
+            jQuery('#template-display-options').fadeOut(500, function(){
+            });
 
-			var ajax_data = {
-				action: 'wp_cta_get_template_meta',
-				selected_template: template,
-				post_id: wp_cta_post_edit_ui.post_id,
-			};
+            var ajax_data = {
+                action: 'wp_cta_get_template_meta',
+                selected_template: template,
+                post_id: wp_cta_post_edit_ui.post_id,
+            };
 
-			jQuery.ajax({
-					type: "POST",
-					url: wp_cta_post_edit_ui.ajaxurl,
-					data: ajax_data,
-					dataType: 'html',
-					timeout: 7000,
-					success: function (response) {
+            jQuery.ajax({
+                    type: "POST",
+                    url: wp_cta_post_edit_ui.ajaxurl,
+                    data: ajax_data,
+                    dataType: 'html',
+                    timeout: 7000,
+                    success: function (response) {
 
-					jQuery('#wp_cta_metabox_select_template .input').remove();
-					jQuery('#wp_cta_metabox_select_template .form-table').remove();
-						jQuery('#template-display-options').fadeIn(500);
-						//alert(response);
-						var html = '<input id="wp_cta_select_template" type="hidden" value="'+template+'" name="wp-cta-selected-template'+variation_tag+'">'
-								+ '<input type="hidden" value="'+wp_cta_post_edit_ui.wp_call_to_action_template_nonce+'" name="wp_cta_wp-cta_custom_fields_nonce">'
-								 + '<h3 class="hndle" style="background: none repeat scroll 0% 0% rgb(248, 248, 248); cursor: default;">'
-								 + '<span>'
-								 + '<small>'+ template +' Options:</small>'
-								 +	'</span>'
-								 +	'</h3>'
-								 + response;
+                    jQuery('#wp_cta_metabox_select_template .input').remove();
+                    jQuery('#wp_cta_metabox_select_template .form-table').remove();
+                        jQuery('#template-display-options').fadeIn(500);
+                        //alert(response);
+                        var html = '<input id="wp_cta_select_template" type="hidden" value="'+template+'" name="wp-cta-selected-template'+variation_tag+'">'
+                                + '<input type="hidden" value="'+wp_cta_post_edit_ui.wp_call_to_action_template_nonce+'" name="wp_cta_wp-cta_custom_fields_nonce">'
+                                 + '<h3 class="hndle" style="background: none repeat scroll 0% 0% rgb(248, 248, 248); cursor: default;">'
+                                 + '<span>'
+                                 + '<small>'+ template +' Options:</small>'
+                                 +  '</span>'
+                                 +  '</h3>'
+                                 + response;
 
-						jQuery('#wp_cta_metabox_select_template #template-display-options').html(html);
+                        jQuery('#wp_cta_metabox_select_template #template-display-options').html(html);
 
-					},
-					error: function(request, status, err) {
-						alert(status);
-					}
-				});
-				jQuery(".wrap").fadeIn(500, function(){
+                    },
+                    error: function(request, status, err) {
+                        alert(status);
+                    }
+                });
+                jQuery(".wrap").fadeIn(500, function(){
             });
         });
 
@@ -311,7 +311,7 @@ jQuery(document).ready(function ($) {
 
     // Add current title of template to selector
     var selected_template = jQuery('#wp_cta_select_template').val();
-	//alert(selected_template);
+    //alert(selected_template);
     var selected_template_id = "#" + selected_template;
     var clean_template_name = selected_template.replace(/-/g, ' ');
     function capitaliseFirstLetter(string)
@@ -324,7 +324,7 @@ jQuery(document).ready(function ($) {
 
     jQuery('#wp-cta-change-template-button').live('click', function () {
         jQuery(".wrap").fadeOut(500,function(){
-            jQuery('#templates-container').isotope();
+
             jQuery(".wp-cta-template-selector-container").fadeIn(500, function(){
                 jQuery(".currently_selected").show();
                 jQuery('#wp-cta-cancel-selection').show();
