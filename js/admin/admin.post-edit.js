@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
 
-	jQuery('#templates-container').isotope();
+
 	// jQuery("#content_ifr").contents().find("img").width(); // image width
 
 	var test = jQuery("#wp_cta_metabox_select_template");
@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
 	jQuery('#template-filter a').click(function(){
 		var selector = jQuery(this).attr('data-filter');
 		//alert(selector);
-		jQuery('#templates-container').isotope({ filter: selector });
+
 		return false;
 	});
 
@@ -324,7 +324,7 @@ jQuery(document).ready(function ($) {
 
     jQuery('#wp-cta-change-template-button').live('click', function () {
         jQuery(".wrap").fadeOut(500,function(){
-            jQuery('#templates-container').isotope();
+
             jQuery(".wp-cta-template-selector-container").fadeIn(500, function(){
                 jQuery(".currently_selected").show();
                 jQuery('#wp-cta-cancel-selection').show();
