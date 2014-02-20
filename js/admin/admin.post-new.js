@@ -38,7 +38,10 @@ jQuery('.wp_cta_select_template').click(function(){
     jQuery('#template-filter a').click(function(){
       var selector = jQuery(this).attr('data-filter');
       //alert(selector);
-
+        $(".template-item-boxes").fadeOut(500);
+        setTimeout(function() {
+         $(selector).fadeIn(500);
+        }, 500);
       return false;
     });
 
