@@ -202,6 +202,9 @@ if (!class_exists('InboundDebugScripts')) {
               //update_option( 'inbound_global_dequeue', $array );
               $global_array = get_option( 'inbound_global_dequeue' );
               //print_r($global_array);
+              if (!$global_array){
+                return;
+              }
 
             foreach ($global_array as $key => $value) {
               if ( $screen->id === $value) {
