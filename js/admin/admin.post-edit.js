@@ -10,8 +10,10 @@ jQuery(document).ready(function ($) {
 	// filter items when filter link is clicked
 	jQuery('#template-filter a').click(function(){
 		var selector = jQuery(this).attr('data-filter');
-		//alert(selector);
-
+		$(".template-item-boxes").fadeOut(500);
+        setTimeout(function() {
+         $(selector).fadeIn(500);
+        }, 500);
 		return false;
 	});
 
@@ -150,7 +152,7 @@ jQuery(document).ready(function ($) {
         $(window).resize( function() { tb_position() } );
     });
 
-    // Isotope Styling
+    // Filtering Styling
     jQuery('#template-filter a').first().addClass('button-primary');
     jQuery('#template-filter a').click(function(){
         jQuery("#template-filter a.button-primary").removeClass("button-primary");

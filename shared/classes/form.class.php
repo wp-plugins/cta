@@ -398,8 +398,8 @@ class InboundForms {
 		$email_to = $form_meta_data['inbound_notify_email'];
 		}
 
-		//print_r($form_meta_data); exit;
-				//print_r($form_data); exit;
+		/* print_r($form_meta_data); exit;
+		print_r($form_data); exit; */
 
 		 $form_email = false;
 		 foreach ($form_data as $key => $value) {
