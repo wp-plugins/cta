@@ -204,13 +204,15 @@ if (!class_exists('InboundDebugScripts')) {
               //print_r($global_array);
 
 
-              if (!$global_array){
-                return;
-              }
+            if (!$global_array){
+              return;
+            }
 
-            foreach ($global_array as $key => $value) {
-              if ( $screen->id === $value) {
-              wp_dequeue_script( $key );
+           if(is_array($global_array)) {
+              foreach ($global_array as $key => $value) {
+                if ( $screen->id === $value) {
+                wp_dequeue_script( $key );
+                }
               }
             }
         }
