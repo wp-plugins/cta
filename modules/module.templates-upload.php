@@ -112,23 +112,20 @@ function wp_cta_templates_upload_execute()
 		if (!$is_template)
 		{
 			echo "<br><br><br><br>";
-			die("WARNING! This zip file does not seem to be a template file! If you are trying to install a Landing Page extension please use the Plugin's upload section! Please press the back button and try again!");
+			die(__( 'WARNING! This zip file does not seem to be a template file! If you are trying to install a Landing Page extension please use the Plugin\'s upload section! Please press the back button and try again!' , 'cta' ));
 		}
 		//exit;
 		//$result = $zip->extract(PCLZIP_OPT_PATH, $extended_path );
 		
 		if ($result = $zip->extract(PCLZIP_OPT_PATH, WP_CTA_UPLOADS_PATH ,  PCLZIP_OPT_REPLACE_NEWER  ) == 0) 
 		{
-			die("There was a problem. Please try again!");
-		} else 
+			die(__( 'There was a problem. Please try again!' , 'cta' ));
+		} 
+		else 
 		{
 			unlink( $_FILES['templatezip']["tmp_name"]);
-			echo '<div class="updated"><p>Template uploaded successfully!</div>';
+			echo '<div class="updated"><p>'. __( 'Template uploaded successfully!' , 'cta' ) .'</div>';
 		}
 	}
 }
 
-function wp_cta_templates_update()
-{
-	//echo 'hello Update!';
-}
