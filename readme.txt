@@ -7,7 +7,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: Call to action, Calls to Action, CTA, inbound marketing, call outs, ad management, split testing, a b test, a b testing, a/b test, a/b testing, popups, email list, landing page, pop up, list building, inbound now, wp-call-to-actions, cpa, click tracking, ad placement, banner ads, slide in call outs, fly ins, like to download, social media share buttons
 Requires at least: 3.8
 Tested up to: 3.8
-Stable Tag: 2.0.4
+Stable Tag: 2.0.6
 
 Create Calls to Action for your WordPress site. Monitor and improve conversion rates, run A/B split tests, customize your own CTA templates and more.
 
@@ -42,7 +42,10 @@ You can quickly take your existing designs and implement them using our <a href=
 
 The plugin is also fully extendable and has a number of actions, filters, and hooks available for use. If a hook doesn't exist, simply ask and we can implement custom changes.
 
-<b>You can also follow us on <a href="https://github.com/inboundnow/landing-pages/">GitHub</a></b>
+
+[Follow Development on GitHub ](https://github.com/inboundnow/cta "Follow & Contribute to core development on GitHub")
+ |
+[Follow Development on Twitter ](https://twitter.com/gitcta "See our latest development commits on Twitter")
 
 == Installation ==
 
@@ -65,6 +68,19 @@ The plugin is also fully extendable and has a number of actions, filters, and ho
 8. Global placements via your sites sidebar
 
 == Changelog ==
+= 2.0.6 =
+* Updated & added language packs
+* Added button to clear all landing page stats.
+* Added 'do-not-track' class listener for disabling link tracking in CTAs.
+* Converted serveral non class modules to class instances
+* Added popups back to CTA display options.
+* Optimized CTA Tracking JS.
+* Bug Fix: Marketing Button
+* Bug Fix: CTA Preview Mode
+
+= 2.0.5 =
+* Bug Fix - Remove JS Alert
+
 = 2.0.4 =
 * Temporary fix for shortcodes disappearing from wordpress 3.8 to 3.9
 * Performance improvements on analytics and lead tracking

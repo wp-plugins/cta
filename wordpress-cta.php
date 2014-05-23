@@ -3,7 +3,7 @@
 Plugin Name: Calls to Action
 Plugin URI: http://www.inboundnow.com/cta/
 Description: Display Targeted Calls to Action on your WordPress site.
-Version: 2.0.4
+Version: 2.0.6
 Author: InboundNow
 Author URI: http://www.inboundnow.com/
 Text Domain: cta
@@ -11,7 +11,7 @@ Domain Path: shared/languages/cta/
 */
 
 // DEFINE CONSTANTS AND GLOBAL VARIABLES
-define('WP_CTA_CURRENT_VERSION', '2.0.4' );
+define('WP_CTA_CURRENT_VERSION', '2.0.6' );
 define('WP_CTA_URLPATH', WP_PLUGIN_URL.'/'.plugin_basename( dirname(__FILE__) ).'/' );
 define('WP_CTA_PATH', WP_PLUGIN_DIR.'/'.plugin_basename( dirname(__FILE__) ).'/' );
 define('WP_CTA_SLUG', plugin_basename( dirname(__FILE__) ) );
@@ -23,17 +23,15 @@ define('WP_CTA_UPLOADS_URLPATH', $uploads['baseurl'].'/calls-to-action/templates
 define('WP_CTA_STORE_URL', 'http://www.inboundnow.com/cta/' );
 
 
-if (is_admin()){
-	if(!isset($_SESSION)){@session_start();}
-}
-
 /* load core files */
 switch (is_admin()) :
 	case true :
 		/* loads admin files */
 		//include_once('functions/functions.global.php'); // old
 		include_once('modules/module.activate.php');
-		include_once('modules/module.post-type.php');
+		include_once('classes/class.post-type.wp-call-to-action.php');
+		include_once('classes/class.extension.wp-lead.php');
+		include_once('classes/class.extension.wordpress-seo.php');
 		include_once('modules/module.admin-menus.php');
 		include_once('modules/module.ajax-setup.php');
 		include_once('modules/module.enqueue.php');
@@ -97,7 +95,9 @@ switch (is_admin()) :
 		/* load front-end files */
 		// include_once('functions/functions.global.php'); // old
 		include_once('modules/module.load-extensions.php');
-		include_once('modules/module.post-type.php');
+		include_once('classes/class.post-type.wp-call-to-action.php');
+		include_once('classes/class.extension.wp-lead.php');
+		include_once('classes/class.extension.wordpress-seo.php');
 		include_once('modules/module.enqueue.php');
 		include_once('modules/module.track.php');
 		include_once('modules/module.click-tracking.php');
@@ -124,12 +124,12 @@ function inbound_load_shared(){
 	define('INBOUDNOW_SHARED','loaded');
 
 	include_once('shared/tracking/store.lead.php'); // Lead Storage from landing pages
-	include_once('shared/classes/form.class.php');  // Mirrored forms
-	include_once('shared/classes/menu.class.php');  // Inbound Marketing Menu
-	include_once('shared/classes/feedback.class.php');  // Inbound Feedback Form
-	include_once('shared/classes/debug.class.php');  // Inbound Debug & Scripts Class
-	include_once('shared/classes/compatibility.class.php');  // Inbound Compatibility Class
-	include_once('shared/inbound-shortcodes/inbound-shortcodes.php');  // Shared Shortcodes
+	include_once('shared/classes/class.form.php');  // Mirrored forms
+	include_once('shared/classes/class.menu.php');  // Inbound Marketing Menu
+	include_once('shared/classes/class.feedback.php');  // Inbound Feedback Form
+	include_once('shared/classes/class.debug.php');  // Inbound Debug & Scripts Class
+	include_once('shared/classes/class.compatibility.php');  // Inbound Compatibility Class
+	include_once('shared/shortcodes/inbound-shortcodes.php');  // Shared Shortcodes
 	include_once('shared/extend/inboundnow.extend.php');
 	include_once('shared/extend/inboundnow.extension-licensing.php'); // Legacy - Inboundnow Package Licensing
 	include_once('shared/extend/inboundnow.extension-updating.php'); // Legacy -Inboundnow Package Updating
