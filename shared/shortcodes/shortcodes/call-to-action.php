@@ -12,20 +12,10 @@
 						'desc' => __('Choose CTA', 'leads'),
 						'type' => 'cta',
 						'std' => '',
-			),
-			'align' => array(
-						'name' => __('CTA Alignment', 'leads'),
-						'desc' => __('Choose Your Form Layout', 'leads'),
-						'type' => 'select',
-						'options' => array(
-							"none" => "None (Centered)",
-							"right" => "Float Right",
-							"left" => "Float Left",
-							),
-						'std' => 'none',
+						'class' => 'main-form-settings',
 			),
 
 		),
-		'shortcode' => '[cta id="{{insert_default}}" align="{{align}}"]',
+		'shortcode' => '[inbound_forms id="{{insert_default}}" name="{{form_name}}"]',
 		'popup_title' => __('Insert Call to Action',  'leads')
 	);

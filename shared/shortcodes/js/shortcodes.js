@@ -525,7 +525,7 @@
 					       setTimeout(function() {
 					                     jQuery("#insert_inbound_cta").select2("open");
 					               }, 500);
-					       jQuery("body").on('change', '#insert_inbound_cta, #inbound_shortcode_align', function () {
+					       jQuery("body").on('change', '#insert_inbound_cta', function () {
 					       	var cta_ids = jQuery("#insert_inbound_cta").select2("data");
 					       	var cta_val = jQuery("#insert_inbound_cta").select2("val");
 					       //	alert("Selected value is: "+jQuery("#insert_inbound_cta").select2("data"));
@@ -539,9 +539,8 @@
 
 					       	console.log(cta_id_array);
 					       	var final_ids = cta_id_array.join();
-					       	var align = jQuery('#inbound_shortcode_align').val();
 					       	setTimeout(function() {
-					       jQuery("#_inbound_shortcodes_newoutput").html('[cta id="'+final_ids+'" align="'+align+'"]');
+					       	jQuery("#_inbound_shortcodes_newoutput").html('[cta id="'+final_ids+'"]');
 					       	        }, 1000);
 					           });
 				}
