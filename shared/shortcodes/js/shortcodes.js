@@ -525,7 +525,7 @@
 					       setTimeout(function() {
 					                     jQuery("#insert_inbound_cta").select2("open");
 					               }, 500);
-					       jQuery("body").on('change', '#insert_inbound_cta', function () {
+					       jQuery("body").on('change', '#insert_inbound_cta, #inbound_shortcode_align', function () {
 					       	var cta_ids = jQuery("#insert_inbound_cta").select2("data");
 					       	var cta_val = jQuery("#insert_inbound_cta").select2("val");
 					       //	alert("Selected value is: "+jQuery("#insert_inbound_cta").select2("data"));
@@ -539,8 +539,9 @@
 
 					       	console.log(cta_id_array);
 					       	var final_ids = cta_id_array.join();
+					       	var align = jQuery('#inbound_shortcode_align').val();
 					       	setTimeout(function() {
-					       	jQuery("#_inbound_shortcodes_newoutput").html('[cta id="'+final_ids+'"]');
+					       jQuery("#_inbound_shortcodes_newoutput").html('[cta id="'+final_ids+'" align="'+align+'"]');
 					       	        }, 1000);
 					           });
 				}
@@ -691,7 +692,7 @@
 				                	var ctmce= jQuery('#' + insert_to + '-tmce');
 				                	switchEditors.switchto(chtml[0]); // switch to html
 
-				                	tb_remove();
+				                	//tb_remove();
 				                	//jQuery('html, body').animate({
 				                	//       scrollTop: jQuery("#" + insert_to + "_InboundShortcodesButton_action").offset().top -200
 				                	//   }, 200);
@@ -814,6 +815,10 @@
 				}, 2000);
 	    		jQuery("body").on('click', '.inbound-shortcodes-insert-cancel', function () {
 	    			window.tb_remove();
+	    			setTimeout(function() {
+	    			 setGlobaltinymce(INTMCE);
+	    			 console.log('reset mce');
+	    			 }, 300);
 	    		});
 
 			},
@@ -866,7 +871,7 @@
 								 if (insert_to === null || insert_to === "") {
 								 	var insert_to = 'content';
 								}
-								console.log(insert_to);
+								console.log('Insert into:', insert_to);
 								//window.tinymce.execInstanceCommand(insert_to, 'mceInsertContent', false, output_cleaned);
 								window.send_to_editor(output_cleaned);
 								//window.tinymce.activeEditor.execCommand('mceInsertContent', false, output_cleaned);
@@ -875,11 +880,16 @@
 								var ctmce= jQuery('#' + insert_to + '-tmce');
 								switchEditors.switchto(chtml[0]); // switch to html
 
-								tb_remove();
+								//tb_remove();
 								//jQuery('html, body').animate({
 								//       scrollTop: jQuery("#" + insert_to + "_InboundShortcodesButton_action").offset().top -200
 								//   }, 200);
 								switchEditors.switchto(ctmce[0]); // switch to tinymce
+								setTimeout(function() {
+								 setGlobaltinymce(INTMCE);
+								 console.log('reset mce');
+								 }, 300);
+
 						}
 
 				},
@@ -914,8 +924,23 @@
 			}
 
 		};
-
+		if (typeof (wp) != "undefined" && wp != null && wp != "") {
+			var INTMCE = wp;
+		} else {
+			var INTMCE = null;
+		}
+		function setGlobalwp(retString){
+		    INTMCE = retString;
+		}
+		function setGlobaltinymce(retString){
+		    wp = retString;
+		}
 		jQuery(document).ready( function() {
+
+			setTimeout(function() {
+			    setGlobalwp(wp);
+			}, 300);
+
 			jQuery('#inbound-shortcodes-popup').livequery( function() {
 				InboundShortcodes.load();
 			});
@@ -943,7 +968,7 @@
 			jQuery("body").on('click', '.launch-marketing-sc', function () {
 				var test = jQuery("#choose-inbound-shortcode").clone();
 
-				window.tb_remove();
+				//window.tb_remove();
 				var shortcode = jQuery(this).attr('data-launch-sc');
 
 				setTimeout(function() {
