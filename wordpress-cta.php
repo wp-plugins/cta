@@ -129,6 +129,8 @@ function inbound_load_shared(){
 	include_once('shared/classes/class.feedback.php');  // Inbound Feedback Form
 	include_once('shared/classes/class.debug.php');  // Inbound Debug & Scripts Class
 	include_once('shared/classes/class.compatibility.php');  // Inbound Compatibility Class
+	include_once('shared/classes/class.templating-engine.php');  // Inbound Templating Engine Class
+	include_once('shared/classes/class.shortcodes.email-template.php'); //Inbound Email Templating Shortcodes Class
 	include_once('shared/shortcodes/inbound-shortcodes.php');  // Shared Shortcodes
 	include_once('shared/extend/inboundnow.extend.php');
 	include_once('shared/extend/inboundnow.extension-licensing.php'); // Legacy - Inboundnow Package Licensing
