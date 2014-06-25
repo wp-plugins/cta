@@ -3,7 +3,7 @@
 Plugin Name: Calls to Action
 Plugin URI: http://www.inboundnow.com/cta/
 Description: Display Targeted Calls to Action on your WordPress site.
-Version: 2.0.7
+Version: 2.0.8
 Author: InboundNow
 Author URI: http://www.inboundnow.com/
 Text Domain: cta
@@ -11,7 +11,7 @@ Domain Path: shared/languages/cta/
 */
 
 // DEFINE CONSTANTS AND GLOBAL VARIABLES
-define('WP_CTA_CURRENT_VERSION', '2.0.7' );
+define('WP_CTA_CURRENT_VERSION', '2.0.8' );
 define('WP_CTA_URLPATH', WP_PLUGIN_URL.'/'.plugin_basename( dirname(__FILE__) ).'/' );
 define('WP_CTA_PATH', WP_PLUGIN_DIR.'/'.plugin_basename( dirname(__FILE__) ).'/' );
 define('WP_CTA_SLUG', plugin_basename( dirname(__FILE__) ) );
@@ -129,9 +129,6 @@ function inbound_load_shared(){
 	include_once('shared/classes/class.feedback.php');  // Inbound Feedback Form
 	include_once('shared/classes/class.debug.php');  // Inbound Debug & Scripts Class
 	include_once('shared/classes/class.compatibility.php');  // Inbound Compatibility Class
-	include_once('shared/classes/class.templating-engine.php');  // Inbound Templating Engine Class
-	include_once('shared/classes/class.shortcodes.email-template.php'); //Inbound Email Templating Shortcodes Class
-	require_once('shared/classes/class.lead-fields.php');  
 	include_once('shared/shortcodes/inbound-shortcodes.php');  // Shared Shortcodes
 	include_once('shared/extend/inboundnow.extend.php');
 	include_once('shared/extend/inboundnow.extension-licensing.php'); // Legacy - Inboundnow Package Licensing
