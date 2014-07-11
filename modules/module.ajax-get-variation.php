@@ -7,12 +7,12 @@
  *
  * Acts as a Singleton.
  *
- * @package wpConfigConnection
+ * @package WP_DB_Connect
  * @author Mark Flint
  * @link www.bluecubeinteractive.com
  * @copyright Please just leave this PHPDoc header in place.
  */
-Class wpConfigConnection {
+Class WP_DB_Connect {
 	/**
 	* @var object $_singleton This is either null in the case that this class has not been
 	* called yet, or an instance of the class object if the class has been called.
@@ -238,7 +238,7 @@ Class wpConfigConnection {
 	*/
 	private static function returnInstance($type) {
 		if (is_null(self::$_singleton)){
-			self::$_singleton = new wpConfigConnection($type);
+			self::$_singleton = new WP_DB_Connect($type);
 		}
 		return self::$_singleton;
 	}
@@ -274,8 +274,8 @@ Class wpConfigConnection {
 	}
 }
 
-$cta_varation = new ReturnVariation;
-class ReturnVariation {
+$cta_varation = new Return_Variation;
+class Return_Variation {
 
 	private $cta_id;
 	private $db;
@@ -301,11 +301,11 @@ class ReturnVariation {
 		/* Connect to MYSQL Datababase */
 		if ( file_exists ( './../../../../wp-config.php' ) )
 		{
-			$this->db = new wpConfigConnection( 1 , './../../../../wp-config.php' );
+			$this->db = new WP_DB_Connect( 1 , './../../../../wp-config.php' );
 		}
 		else if ( './../../../../../wp-config.php' )
 		{
-			$this->db = new wpConfigConnection( 1 , './../../../../../wp-config.php' );
+			$this->db = new WP_DB_Connect( 1 , './../../../../../wp-config.php' );
 		}
 		else
 		{
@@ -331,30 +331,25 @@ class ReturnVariation {
 			$this->cta_id = $_GET['cta_id'];
 		}
 
-		$this->variations = $this->get_post_meta('cta_ab_variations');
-		$this->variations_array = explode(',',$this->variations);
-		$this->variations_array = array_filter($this->variations_array,'is_numeric');
+		$this->variations = $this->get_post_meta('wp-cta-variations');
+		$this->variations_array = json_decode( $this->variations , true );
 		$this->variation_marker = $this->get_post_meta('_cta_ab_variation_marker');
 
-		if (!is_numeric($this->variation_marker))
+		if (!is_numeric($this->variation_marker)) {
 			$this->variation_marker = 0;
+		}
 
 		if ($this->variations_array)
 		{
-			foreach ($this->variations_array as $key=>$vid)
+			foreach ($this->variations_array as $vid => $variation )
 			{
 
-				if ($vid==0)
-				{
-					$variation_status = $this->get_post_meta('wp_cta_ab_variation_status' );
-				}
-				else
-				{
-					$variation_status = $this->get_post_meta( 'cta_ab_variation_status_'.$vid );
-				}
+				
+					
+			
 
 
-				if (!is_numeric($variation_status)||$variation_status==1){
+				if (!isset($variation['status']) || $variation['status'] == 'active'  ){
 					$this->live_variations[] = $vid;
 				}
 			}
