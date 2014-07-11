@@ -4,17 +4,17 @@ add_action( 'widgets_init', 'wp_cta_load_widgets' );
 
 function wp_cta_load_widgets() {
 
-	register_widget( 'CTADynamicWidget' );
-	register_widget( 'CTAStaticWidget' );
+	register_widget( 'CTA_Dynamic_Widget' );
+	register_widget( 'CTA_Static_Widget' );
 }
 
-class CTADynamicWidget extends WP_Widget
+class CTA_Dynamic_Widget extends WP_Widget
 {
 
-	function CTADynamicWidget() {
+	function CTA_Dynamic_Widget() {
 
 		/* Widget settings. */
-		$widget_ops = array( 'classname' => 'class_CTADynamicWidget', 'description' => __('Use this widget to accept Calls to Action placements.', 'cta') );
+		$widget_ops = array( 'classname' => 'class_CTA_Dynamic_Widget', 'description' => __('Use this widget to accept Calls to Action placements.', 'cta') );
 
 		/* Widget control settings. */
 		$control_ops = array( 'width' => 300, 'height' => 350, 'id_base' => 'id_wp_cta_dynamic_widget' );
@@ -63,14 +63,14 @@ class CTADynamicWidget extends WP_Widget
 }
 
 
-class CTAStaticWidget extends WP_Widget
+class CTA_Static_Widget extends WP_Widget
 {
 	private $cta_templates;
 
-	function CTAStaticWidget() {
+	function CTA_Static_Widget() {
 
 		/* Widget settings. */
-		$widget_ops = array( 'classname' => 'class_CTAStaticWidget', 'description' => __('Use this widget to manually display Calls to Action in sidebars.', 'cta') );
+		$widget_ops = array( 'classname' => 'class_CTA_Static_Widget', 'description' => __('Use this widget to manually display Calls to Action in sidebars.', 'cta') );
 
 		/* Widget control settings. */
 		$control_ops = array( 'width' => 300, 'height' => 350, 'id_base' => 'id_wp_cta_static_widget' );
@@ -94,10 +94,10 @@ class CTAStaticWidget extends WP_Widget
 		/* get enviroment object id if available */
 		$obj_id = $wp_query->get_queried_object_id();
 
-		$CTALoadExtensions = CTALoadExtensions();
-		$this->cta_templates = $CTALoadExtensions->template_definitions;
+		$CTA_Load_Extensions = CTA_Load_Extensions();
+		$this->cta_templates = $CTA_Load_Extensions->template_definitions;
 
-		$CallsToAction = CallsToAction();
+		$CTA_Render = CTA_Render();
 
 		$selected_ctas = $instance['cta_ids'];
 
@@ -107,8 +107,12 @@ class CTAStaticWidget extends WP_Widget
 		$cta_id = $selected_ctas[$rand_key];
 		$this->cta_id = $cta_id;
 
-		$selected_cta =  $CallsToAction->prepare_cta_dataset( $cta_id );
-
+		$selected_cta =  $CTA_Render->prepare_cta_dataset( array($cta_id) );
+		
+		if ( !isset($selected_cta['templates']) ) {
+			return;
+		}
+		
 		/* Import Correct CSS & JS from Assets folder and Enqueue */
 		$loaded = array();
 		foreach ($selected_cta['templates'] as $template)
@@ -118,7 +122,7 @@ class CTAStaticWidget extends WP_Widget
 			}
 
 			$loaded[] = $template['slug'];
-			$assets = $CallsToAction->get_assets($template);
+			$assets = $CTA_Render->get_assets($template);
 			$localized_template_id = str_replace( '-' , '_' , $template['slug'] );
 			foreach ($assets as $type => $file)
 			{
@@ -152,10 +156,10 @@ class CTAStaticWidget extends WP_Widget
 			//print_r($this->cta_templates);exit;
 			$dynamic_css = $this->cta_templates[$template_slug]['css-template'];
 
-			$dynamic_css = $CallsToAction->replace_template_variables( $selected_cta , $dynamic_css , $vid );
+			$dynamic_css = $CTA_Render->replace_template_variables( $selected_cta , $dynamic_css , $vid );
 			$css_id_preface = "#wp_cta_" . $cta_id . "_variation_" . $vid;
 
-			$dynamic_css = $CallsToAction->parse_css_template($dynamic_css , $css_id_preface);
+			$dynamic_css = $CTA_Render->parse_css_template($dynamic_css , $css_id_preface);
 
 			$css_styleblock_class = apply_filters( 'wp_cta_styleblock_class' , '' , $cta_id , $vid );
 
@@ -179,7 +183,7 @@ class CTAStaticWidget extends WP_Widget
 		/* get supporting widget settings */
 		$selected_cta['margin-top'] = $instance['cta_margin_top'];
 		$selected_cta['margin-bottom'] = $instance['cta_margin_bottom'];
-		$cta_template = $CallsToAction->build_cta_content( $selected_cta );
+		$cta_template = $CTA_Render->build_cta_content( $selected_cta );
 
 		$cta_template = do_shortcode($cta_template);
 

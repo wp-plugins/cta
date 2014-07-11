@@ -2,12 +2,12 @@
 /* loads extension definitions related to Calls to Action plugin */
 /* extension definitions include cta templates, cta metaboxes    */
 
-function CTALoadExtensions()
+function CTA_Load_Extensions()
 {
-	return CTALoadExtensions::instance();
+	return CTA_Load_Extensions::instance();
 }
 
-class CTALoadExtensions
+class CTA_Load_Extensions
 {
 	private static $instance;
 	public $definitions;
@@ -15,9 +15,9 @@ class CTALoadExtensions
 
 	public static function instance()
 	{
-		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof CTALoadExtensions ) )
+		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof CTA_Load_Extensions ) )
 		{
-			self::$instance = new CTALoadExtensions;
+			self::$instance = new CTA_Load_Extensions;
 
 			/* if frontend load transient data - this data will update on every wp-admin call so you can use an admin call as a cache clear */
 			if ( !is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX &&  isset($_POST['action']) && $_POST['action'] != 'wp_cta_get_template_meta' )  )
@@ -238,23 +238,23 @@ class CTALoadExtensions
 				'label' => __( 'CTA Width' , 'cta' ),
 				'description' => __( 'Enter the Width of the CTA in pixels. Example: 100% or 300px' , 'cta' ) ,
 				'id'  => 'wp_cta_width',
-				'type'  => 'text',
+				'type'  => 'width-height',
 				'default'  => '100%',
 				'class' => 'cta-width',
 				'context'  => 'priority',
 				'global' => true
-				);
+			);
 
 			$height = array(
 				'label' => __( 'CTA Height' , 'cta' ),
 				'description' => __( 'Enter the Height of the CTA in pixels. Example: auto or 300px' , 'cta' ),
 				'id'  => 'wp_cta_height',
-				'type'  => 'text',
+				'type'  => 'width-height',
 				'default'  => 'auto',
 				'class' => 'cta-height',
 				'context'  => 'priority',
 				'global' => true
-				);
+			);
 
 			array_unshift($wp_cta_data[$key]['settings'] , $width, $height);
 
