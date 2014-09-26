@@ -36,7 +36,9 @@ class CTA_Activation {
 		
 		/* Set Default Settings */
 		self::set_default_settings();
-
+		
+		/* Activate shared components */
+		self::activate_shared();
 	}
 	
 	/**
@@ -99,7 +101,7 @@ class CTA_Activation {
 	public static function display_upgrade_routine_notice() {
 		?>
 		<div class="error">
-			<p><?php _e( '<strong>WARNING!</strong> We\'ve noticed that <strong>Calls to Action plugin</strong> requires <strong>database upgrades</strong> for proper functioning. To manually initiate the db updates please click the following link:', 'cta' ); ?> <a href='?plugin=cta&plugin_action=upgrade_routines'><?php _e('Run Upgrade Processes' , 'cta' ); ?></a></p>
+			<p><?php _e( 'Calls to Action plugin requires  a database upgrade:', 'cta' ); ?> <a href='?plugin=cta&plugin_action=upgrade_routines'><?php _e('Upgrade Database Now' , 'cta' ); ?></a></p>
 		</div>
 		<?php
 	}
@@ -120,6 +122,13 @@ class CTA_Activation {
 		add_option( 'wp_cta_global_record_admin_actions', '1', '', 'no' );
 		add_option( 'wp_cta_global_wp_cta_slug', 'cta', '', 'no' );
 		update_option( 'wp_cta_activate_rewrite_check', '1');
+	}
+	
+	/**
+	*  Tells Inbound Shared to run activation commands
+	*/
+	public static function activate_shared() {
+		update_option( 'Inbound_Activate', true );
 	}
 	
 	/* Aborts activation and details 
