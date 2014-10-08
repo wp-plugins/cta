@@ -3,7 +3,7 @@
 Plugin Name: Calls to Action
 Plugin URI: http://www.inboundnow.com/cta/
 Description: Display Targeted Calls to Action on your WordPress site.
-Version: 2.2.0
+Version: 2.2.1
 Author: InboundNow
 Author URI: http://www.inboundnow.com/
 Text Domain: cta
@@ -37,7 +37,8 @@ if (!class_exists('Inbound_Calls_To_Action_Plugin')) {
 		 */
 		static function fail_php_version() {
 			//add_action( 'plugins_loaded', array( __CLASS__, 'load_text_domain_init' ) );
-			self::notice( __( 'Calls to Action requires PHP version 5.3+, plugin is currently NOT ACTIVE.', 'cta' ) );
+			$plugin_url = admin_url( 'plugins.php' );
+			self::notice( __( 'Calls to Action requires PHP version 5.3+ to run. Your version '.PHP_VERSION.' is not high enough.<br><u>Please contact your hosting provider</u> to upgrade your PHP Version.<br>The plugin is NOT Running. You can disable this warning message by <a href="'.$plugin_url.'">deactivating the plugin</a>', 'cta' ) );
 		}
 
 		/**
@@ -94,8 +95,8 @@ if (!class_exists('Inbound_Calls_To_Action_Plugin')) {
 		*/
 		private static function define_constants() {
 
-			define('WP_CTA_CURRENT_VERSION', '2.2.0' );
-			define('WP_CTA_URLPATH', WP_PLUGIN_URL.'/'.plugin_basename( dirname(__FILE__) ).'/' );
+			define('WP_CTA_CURRENT_VERSION', '2.2.1' );
+			define('WP_CTA_URLPATH', plugins_url( '/' , __FILE__ ) );
 			define('WP_CTA_PATH', WP_PLUGIN_DIR.'/'.plugin_basename( dirname(__FILE__) ).'/' );
 			define('WP_CTA_SLUG', plugin_basename( dirname(__FILE__) ) );
 			define('WP_CTA_FILE', __FILE__ );
@@ -146,7 +147,7 @@ if (!class_exists('Inbound_Calls_To_Action_Plugin')) {
 					include_once('classes/class.extension.wordpress-seo.php');
 					include_once('classes/class.enqueues.php');
 					include_once('classes/class.tracking.php');
-					include_once('classes/class.ajax.listeners.php');					
+					include_once('classes/class.ajax.listeners.php');
 					include_once('classes/class.widget.static.php');
 					include_once('classes/class.widget.dynamic.php');
 					include_once('classes/class.cta.variations.php');
