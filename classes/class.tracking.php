@@ -114,7 +114,8 @@ class CTA_Conversion_Tracking {
 			if (!(false === $pos)) {
 				$link = substr($qs, $pos);
 				$link = str_replace('wp_cta_redirect=', '', $link); // clean url
-
+				$link = urldecode( $link );
+				
 				// Extract the ID and get the link
 				$pattern = '/wp_cta_redirect_(\d+?)\=/';
 				preg_match($pattern, $link, $matches);
