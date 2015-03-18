@@ -14,15 +14,13 @@ if ( !class_exists( 'CTA_Render' ) ) {
 
 
 	/* Provide way to call the singleton instance */
-	function CTA_Render()
-	{
+	function CTA_Render() {
 		return CTA_Render::instance();
 	}
 
 	/* Initialize first singleton instance at init */
 	add_action('init','wp_cta_load_calls_to_action' , 11);
-	function wp_cta_load_calls_to_action()
-	{
+	function wp_cta_load_calls_to_action() {
 		$calls_to_action = CTA_Render();
 	}
 
@@ -60,6 +58,9 @@ if ( !class_exists( 'CTA_Render' ) ) {
 			return self::$instance;
 		}
 
+		/**
+		*  Load Hooks and Filters
+		*/
 		function hooks() {
 			/* Get Global $post Object */
 			add_action('wp', array( $this, 'setup_globals' ) , 1 );
@@ -68,10 +69,7 @@ if ( !class_exists( 'CTA_Render' ) ) {
 			add_action('wp_cta_after_global_init', array( $this , 'setup_cta') , 1 );
 
 			/* Enqueue CTA js * css */
-			add_action('wp_enqueue_scripts' , array( $this , 'enqueue_cta_js_css') , 10 );
-
-			/* Add Final CTA Loading Js */
-			add_action('wp_footer', array( $this , 'reveal_loaded_ctas' ) , 19);
+			add_action('wp_enqueue_scripts' , array( $this , 'enqueue_scripts') , 20 );
 
 			/* Apply custom JS & CSS for CTA */
 			add_action('wp_head', array( $this , 'load_custom_js_css') );
@@ -107,7 +105,7 @@ if ( !class_exists( 'CTA_Render' ) ) {
 			} else {
 				$paged = true;
 			}
-			
+
 			if (!isset(self::$instance->obj)) {
 				self::$instance->obj = new stdClass();
 				self::$instance->obj->post_type = 'none';
@@ -221,6 +219,8 @@ if ( !class_exists( 'CTA_Render' ) ) {
 						unset($cta_obj[$cta_id]['variations'][$vid]);
 						continue;
 					}
+					
+
 
 					if ( $variation['status'] == 'paused' && !isset($_GET['wp-cta-variation-id']) ) {
 						unset($cta_obj[$cta_id]['variations'][$vid]);
@@ -253,6 +253,7 @@ if ( !class_exists( 'CTA_Render' ) ) {
 
 			/* return one cta out of list of available ctas */
 			$key = array_rand($cta_obj);
+			
 			return $cta_obj[$key];
 
 
@@ -302,7 +303,11 @@ if ( !class_exists( 'CTA_Render' ) ) {
 			return $files;
 		}
 
-		public function enqueue_cta_js_css() {
+		/**
+		*  Enqueue CSS & JS
+		*/
+		public function enqueue_scripts() {
+
 			/* Get Variation Selection Nature */
 			self::$instance->disable_ajax = get_option('wp-cta-main-disable-ajax-variation-discovery' , 0 );
 			self::$instance->lite_ajax = get_option('wp-cta-main-use-lite-ajax-mode' , 0 );
@@ -320,8 +325,8 @@ if ( !class_exists( 'CTA_Render' ) ) {
 			} else {
 				$ajax_url =  admin_url( 'admin-ajax.php' );
 			}
-			
-			wp_enqueue_script('cta-load-variation', WP_CTA_URLPATH.'js/cta-load-variation.js', array('jquery') , true );
+
+			wp_enqueue_script( 'cta-load-variation' , WP_CTA_URLPATH.'js/cta-variation.js', array('jquery') , true );
 			wp_localize_script( 'cta-load-variation', 'cta_variation', array('cta_id' => self::$instance->selected_cta['id'] , 'ajax_url' => $ajax_url , 'admin_url' => admin_url( 'admin-ajax.php' ) , 'home_url' => get_home_url() , 'disable_ajax' => self::$instance->disable_ajax ) );
 
 
@@ -431,12 +436,7 @@ if ( !class_exists( 'CTA_Render' ) ) {
 			}
 		}
 
-		public function reveal_loaded_ctas() {
-			/* determin variation */
-			wp_enqueue_script('cta-reveal-variation', WP_CTA_URLPATH.'js/cta-reveal-variation.js', array('jquery') , true );
-			wp_localize_script( 'cta-reveal-variation', 'cta_reveal', array( 'admin_url' => admin_url( 'admin-ajax.php' ) , 'home_url' => get_home_url() ) );
 
-		}
 
 		/* Replaced tokens in call to action template with values */
 		public function replace_template_variables( $selected_cta , $template , $vid ) {
@@ -871,8 +871,6 @@ if ( !class_exists( 'CTA_Render' ) ) {
 				$custom_css = CTA_Variations::get_variation_custom_css ( $selected_cta['id'] , $vid );
 
 
-				/* This is printing CTA CSS Twice on Preview Mode */
-				/* We may reserve this function only for custom css and custom js */
 				$dynamic_css = self::$instance->cta_templates[$template_slug]['css-template'];
 				$dynamic_css = self::$instance->replace_template_variables( $selected_cta , $dynamic_css , $vid );
 
@@ -883,28 +881,7 @@ if ( !class_exists( 'CTA_Render' ) ) {
 
 
 				$dynamic_css = self::$instance->parse_css_template($dynamic_css , $css_id_preface);
-				/****** New Parse - DO NOT DELTE *******/
-				// http://regexr.com/?36e6v
-				// http://regex101.com/r/rF9iR9
-				/* IN PROGRESS */
-				/*
-				$css = explode("}", $dynamic_css);
-				$pattern = "/.-?[_a-zA-Z]+[_a-zA-Z0-9-]*(?=[^}]*\{)/"; // close. matches all ids and classes but separates
-				//$pattern = "/(?![^{]*})(#\S+)\b/";
-				preg_match_all($pattern, $dynamic_css, $match_css);
-				print_r($match_css[0]);
-				$matched_css_names = $match_css[0];
-				foreach ($matched_css_names as $key => $value) {
-
-					if (!preg_match("/:/", $value)){
-						echo $value . "<br>";
-					}
-				}
-
-				echo "<pre>";
-				print_r($css);
-				echo "</pre>"; /**/
-				/****** End New Parse - DO NOT DELTE *******/
+				
 				$css_styleblock_class = apply_filters( 'wp_cta_styleblock_class' , '' , $selected_cta['id'] , $vid );
 
 				if (!stristr($custom_css,'<style')){
@@ -1106,7 +1083,7 @@ if ( !class_exists( 'CTA_Render' ) ) {
 			global $post;
 
 			if (!isset($post)) {
-				return;
+				return $content;
 			}
 
 			if ( !self::$instance->selected_cta || self::$instance->cta_content_placement =='off' ) {
@@ -1164,6 +1141,9 @@ if ( !class_exists( 'CTA_Render' ) ) {
 			return $content;
 		}
 
+		/**
+		*  Determines if cta is set to display in dynamic widget placeholder and if it is then redners it inside the appropriate hook
+		*/
 		function add_cta_to_dynamic_content()
 		{
 			if ( !self::$instance->selected_cta || self::$instance->cta_content_placement =='off') {
@@ -1177,11 +1157,17 @@ if ( !class_exists( 'CTA_Render' ) ) {
 			}
 		}
 
+		/**
+		*  Renders shortcode in wp_cta_cta_dynamic_widget action hook
+		*/
 		function render_widget()
 		{
 			echo do_shortcode(self::$instance->cta_template);
 		}
 
+		/**
+		*  This method processes the [cta] shortcode
+		*/
 		function process_shortcode_cta( $atts )
 		{
 			extract(shortcode_atts(array(
@@ -1229,9 +1215,7 @@ if ( !class_exists( 'CTA_Render' ) ) {
 			}
 
 			$script =	"<script>";
-			$script .= "	jQuery(document).ready(function($) {";
-			$script .= "		wp_cta_load_variation( '" .$cta_id ."' , '" .$variation_id ."' , '".self::$instance->disable_ajax ."' )";
-			$script .= "	});";
+			$script .= "	wp_cta_load_variation( '" .$cta_id ."' , '" .$variation_id ."' , '".self::$instance->disable_ajax ."' )";
 			$script .= "</script>";
 
 			if ($return) {
