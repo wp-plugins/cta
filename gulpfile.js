@@ -13,12 +13,12 @@ var gulp = require('gulp'),
     clean = require('gulp-clean'),
     rename = require('gulp-rename'),
     markdox = require("gulp-markdox"),
-    phplint = require('phplint').lint,
+    //phplint = require('phplint').lint,
     package = require('./package.json');
 
-var sharedPath = 'shared/assets/frontend/js/analytics-src/';
+var sharedPath = 'shared/assets/js/frontend/analytics-src/';
 var paths = {
-    output: 'shared/assets/frontend/js/analytics/',
+    output: 'shared/assets/js/frontend/analytics/',
     scripts: [
         sharedPath + 'analytics.init.js',
         sharedPath + 'analytics.hooks.js',
@@ -32,7 +32,7 @@ var paths = {
         //sharedPath + 'analytics.examples.js',
     ],
     test: [
-        'test/spec/**/*.js'
+        'tests/spec/**/*.js'
     ]
 };
 
@@ -47,19 +47,20 @@ var banner = [
 ].join('');
 
 
-gulp.task('phplint', function(cb) {
+
+//gulp.task('phplint', function(cb) {
     //phplint(['src/**/*.php'], {
-    phplint(['wordpress-cta.php'], {
-        limit: 10
-    }, function(err, stdout, stderr) {
-        if (err) {
-            console.log(err);
-            cb(err);
-            process.exit(1);
-        }
-        cb();
-    });
-});
+ //   phplint(['calls-to-action.php'], {
+//        limit: 10
+ //   }, function(err, stdout, stderr) {
+ //       if (err) {
+   //         console.log(err);
+  ////          cb(err);
+   //         process.exit(1);
+   //     }
+   //     cb();
+  //  });
+//});
 
 gulp.task('test', ['phplint']);
 
@@ -70,7 +71,7 @@ gulp.task('scripts', ['clean'], function() {
         .pipe(header(banner, {
             package: package
         }))
-        .pipe(gulp.dest('shared/assets/frontend/js/analytics/'))
+        .pipe(gulp.dest('shared/assets/js/frontend/analytics/'))
         .pipe(rename({
             suffix: '.min'
         }))
@@ -78,7 +79,7 @@ gulp.task('scripts', ['clean'], function() {
         .pipe(header(banner, {
             package: package
         }))
-        .pipe(gulp.dest('shared/assets/frontend/js/analytics/'));
+        .pipe(gulp.dest('shared/assets/js/frontend/analytics/'));
 });
 
 gulp.task('lint', function() {
@@ -100,7 +101,7 @@ gulp.task('test', function() {
     return gulp.src(paths.scripts.concat(paths.test))
         .pipe(plumber())
         .pipe(karma({
-            configFile: 'test/karma.conf.js'
+            configFile: 'tests/karma.conf.js'
         }))
         .on('error', function(err) {
             throw err;
@@ -110,13 +111,13 @@ gulp.task('test', function() {
 /* Watch Files For Changes */
 
 gulp.task('watch', function() {
-    //gulp.watch('shared/assets/frontend/js/analytics-src/*.js', ['lint', 'scripts']);
-    gulp.watch('shared/assets/frontend/js/analytics-src/*.js', ['default']);
+    //gulp.watch('shared/assets/js/frontend/analytics-src/*.js', ['lint', 'scripts']);
+    gulp.watch('shared/assets/js/frontend/analytics-src/*.js', ['default']);
     //gulp.watch('scss/*.scss', ['sass']);
 });
 
 gulp.task("doc", function() {
-    gulp.src("shared/assets/frontend/js/analytics-src/*.js")
+    gulp.src("shared/assets/js/frontend/analytics-src/*.js")
         .pipe(markdox())
         .pipe(rename({
             extname: ".md"
@@ -127,14 +128,14 @@ gulp.task("doc", function() {
 
 /* concat docs */
 gulp.task("maindoc", function() {
-    gulp.src("shared/assets/frontend/js/analytics-src/*.js")
+    gulp.src("shared/assets/js/frontend/analytics-src/*.js")
         .pipe(markdox())
         .pipe(concat("main.md"))
         .pipe(gulp.dest("./shared/docs"));
 });
 
 gulp.task("docs", function() {
-    gulp.src("shared/assets/frontend/js/analytics/inboundAnalytics.js")
+    gulp.src("shared/assets/js/frontend/analytics/inboundAnalytics.js")
         .pipe(markdox())
         .pipe(rename({
             extname: ".md"
@@ -143,7 +144,7 @@ gulp.task("docs", function() {
 });
 
 gulp.task("generateDocs", function() {
-    gulp.src("shared/assets/frontend/js/analytics-src/analytics.events.js")
+    gulp.src("shared/assets/js/frontend/analytics-src/analytics.events.js")
         .pipe(markdox())
         .pipe(rename({
             extname: ".md"
