@@ -401,16 +401,8 @@ var InboundForms = (function(_inbound) {
                   }*/
 
                     switch (formInput.nodeName) {
-					
-                        case 'CHECKBOX':
-                            value = 'hello';
 
-
-                            if (value === false) {
-                                continue;
-                            }
-                            break; 
-						case 'INPUT':
+                        case 'INPUT':
                             value = this.getInputValue(formInput);
 
 
