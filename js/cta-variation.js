@@ -81,11 +81,11 @@ function wp_cta_add_tracking_classes(ctas) {
 }
 
 function wp_cta_load_variation( cta_id, vid, disable_ajax ) {
+	
 	/* Preload wp_cta_loaded storage object into variable */
-	var loaded_ctas = {};
-	var loaded_local_cta = _inbound.totalStorage('wp_cta_loaded');
-	if (loaded_local_cta != null) {
-		var loaded_ctas = JSON.parse(localStorage.getItem('wp_cta_loaded'));
+	var loaded_ctas = _inbound.totalStorage('wp_cta_loaded');
+	if (loaded_ctas == null) {
+		var loaded_ctas = {};
 	}
 
 	/* if variation is pre-defined then immediately load variation*/
@@ -96,7 +96,7 @@ function wp_cta_load_variation( cta_id, vid, disable_ajax ) {
 
 		/* record impression  */
 		loaded_ctas[cta_id] = vid;
-		wp_cta_record_impressions( JSON.stringify(loaded_ctas) );
+		_inbound.totalStorage('wp_cta_loaded', loaded_ctas); // store cta data
 
 		/* add tracking classes */
 		wp_cta_add_tracking_classes( loaded_ctas );
@@ -125,7 +125,6 @@ function wp_cta_load_variation( cta_id, vid, disable_ajax ) {
 				'cta_id' : cta_id
 			 },
 			 success: function(vid) {
-
 				/* update local storage variable */
 				loaded_ctas[cta_id] = vid.trim();
 
@@ -143,22 +142,27 @@ _inbound.totalStorage.deleteItem('wp_cta_loaded');
 
 InboundQuery(document).ready(function($) {
 
-	if (cta_variation.cta_id) {
-		wp_cta_load_variation( cta_variation.cta_id , null , cta_variation.disable_ajax );
-	}
+	setTimeout( function() {
 
-	var ctas = localStorage.getItem('wp_cta_loaded');
+		if (cta_variation.cta_id) {
+			wp_cta_load_variation( cta_variation.cta_id , null , cta_variation.disable_ajax );
+		}
 
-	if(ctas){
-		var loaded_ctas = JSON.parse(localStorage.getItem('wp_cta_loaded'));
-	} else {
-	  return false;
-	}
-
-	/* Add Tracking Classes & Reveal CTAs */
-	wp_cta_add_tracking_classes(loaded_ctas);
-
-	/* Record Impressions */
-	wp_cta_record_impressions(ctas);
+		var ctas = _inbound.totalStorage('wp_cta_loaded');
+		
+		switch (typeof ctas) {
+			case 'object':			
+				break;
+			case 'undefined':
+				return false;
+		}
+		
+		/* Add Tracking Classes & Reveal CTAs */
+		wp_cta_add_tracking_classes(ctas);
+		
+		/* Record Impressions */
+		wp_cta_record_impressions(ctas);
+		
+	} , 1 );
 
 });
