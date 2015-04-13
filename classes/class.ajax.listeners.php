@@ -90,6 +90,16 @@ class CTA_Ajax_Listeners {
 		global $wpdb; // this is how you get access to the database
 		global $user_ID;
 		
+		if (!isset($_POST['ctas'])) {
+			return;
+		}
+		
+		$do_not_track = apply_filters('inbound_analytics_stop_track' , false );
+
+		if ( $do_not_track ) {
+			return;
+		}	
+		
 		foreach ( $_POST['ctas'] as $cta_id => $vid ) {
 			do_action('wp_cta_record_impression' , $cta_id , $vid );
 		}
@@ -110,6 +120,12 @@ class CTA_Ajax_Listeners {
 		$cta_id = trim($_POST['cta_id']);
 		$variation_id = trim($_POST['variation_id']);
 
+		$do_not_track = apply_filters('inbound_analytics_stop_track' , false );
+
+		if ( $do_not_track ) {
+			return;
+		}	
+	
 		do_action('wp_cta_record_conversion', $cta_id, $variation_id);
 
 		print $cta_id;
