@@ -22,7 +22,7 @@ var _inboundPageTracking = (function(_inbound) {
         idleTimeout,
         utils = _inbound.Utils,
         timeNow = _inbound.Utils.GetDate(),
-        lsType = 'page_views',
+        lsType = (typeof wp !== "undefined") ? 'admin_page_views' : 'page_views',
         Pages = _inbound.totalStorage(lsType) || {},
         /*!
           Todo: Use UTC offset
@@ -31,16 +31,15 @@ var _inboundPageTracking = (function(_inbound) {
           console.log(currentTime) // gets UTC offset
         */
         id = inbound_settings.post_id || window.location.pathname,
-        analyticsTimeout = _inbound.Settings.timeout || 10000;
+        analyticsTimeout = _inbound.Settings.timeout || 30000;
 
     _inbound.PageTracking = {
 
         init: function(options) {
-
+            //console.log('type', lsType);
             if(lsType !== 'page_views') {
                 return false; // in admin
             }
-
             this.CheckTimeOut();
             // Set up options and defaults
             options = options || {};
@@ -302,14 +301,12 @@ var _inboundPageTracking = (function(_inbound) {
 
         },
         CheckTimeOut: function() {
-
             var pageRevisit = this.isRevisit(Pages),
                 status,
                 timeout;
 
             /* Default */
             if (pageRevisit) {
-
                 var prev = Pages[id].length - 1,
                     lastView = Pages[id][prev],
                     timeDiff = Math.abs(new Date(lastView).getTime() - new Date(timeNow).getTime());
@@ -332,30 +329,25 @@ var _inboundPageTracking = (function(_inbound) {
             _inbound.deBugger('pages', status);
         },
         storePageView: function() {
+            var leadID = _inbound.Utils.readCookie('wp_lead_id'),
+                lead_uid = _inbound.Utils.readCookie('wp_lead_uid');
 
-			if ( inbound_settings.page_tracking == 'off' ) {
-				return;
-			}
+            if (leadID) {
 
-            var leadID = ( _inbound.Utils.readCookie('wp_lead_id') ) ? _inbound.Utils.readCookie('wp_lead_id') : '';
-            var lead_uid = ( _inbound.Utils.readCookie('wp_lead_uid') ) ? _inbound.Utils.readCookie('wp_lead_uid') : '';
-
-            var data = {
-                action: 'inbound_track_lead',
-                wp_lead_uid: lead_uid,
-                wp_lead_id: leadID,
-                page_id: inbound_settings.post_id,
-                variation_id: inbound_settings.variation_id,
-                post_type: inbound_settings.post_type,
-                current_url: window.location.href,
-                json: '0'
-            };
-            var firePageCallback = function(leadID) {
-                //_inbound.Events.page_view_saved(leadID);
-            };
-            //_inbound.Utils.doAjax(data, firePageCallback);
-            _inbound.Utils.ajaxPost(inbound_settings.admin_url, data, firePageCallback);
-
+                var data = {
+                    action: 'wpl_track_user',
+                    wp_lead_uid: lead_uid,
+                    wp_lead_id: leadID,
+                    page_id: inbound_settings.post_id,
+                    current_url: window.location.href,
+                    json: '0'
+                };
+                var firePageCallback = function(leadID) {
+                    //_inbound.Events.page_view_saved(leadID);
+                };
+                //_inbound.Utils.doAjax(data, firePageCallback);
+                _inbound.Utils.ajaxPost(inbound_settings.admin_url, data, firePageCallback);
+            }
         }
         /*! GA functions
         function log_event(category, action, label) {

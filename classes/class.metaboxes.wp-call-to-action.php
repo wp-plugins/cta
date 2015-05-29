@@ -794,7 +794,7 @@ if (!class_exists('CTA_Metaboxes')) {
 			
 			?>
 			<script>
-			jQuery(document).ready(function() {
+			InboundQuery(document).ready(function() {
 				
 				
 				

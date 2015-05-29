@@ -350,7 +350,7 @@ class CTA_AJAX_Return_Variation {
 	function return_variation() {
 
 		if (!isset($this->live_variations))	{
-			echo 'x';
+			echo 0;
 			exit;
 		}
 
