@@ -18,7 +18,7 @@ if (!class_exists('Inbound_Asset_Loader')) {
 		 * public facing site.
 		 *
 		 * Example:
-		 * self::enqueue_shared_file('SCRIPT-ID',  INBOUDNOW_SHARED_PATH . 'assets/js/frontend/path-in-shared-assets.js', 'localized_var_name', $localized_array_values, $dependancies_array );
+		 * self::enqueue_shared_file('SCRIPT-ID',  INBOUNDNOW_SHARED_PATH . 'assets/js/frontend/path-in-shared-assets.js', 'localized_var_name', $localized_array_values, $dependancies_array );
 		 */
 		static function register_scripts_and_styles() {
 			/* Frontent and Backend Files */
@@ -54,7 +54,7 @@ if (!class_exists('Inbound_Asset_Loader')) {
 						  wp_dequeue_script( $handle );
 					  }
 				}
-				
+
 				/* unminified source available */
 				self::enqueue_shared_file('inbound-analytics', 'assets/js/frontend/analytics/inboundAnalytics.min.js', array( 'jquery' ), 'inbound_settings', self::localize_lead_data());
 
@@ -79,8 +79,8 @@ if (!class_exists('Inbound_Asset_Loader')) {
 		static function enqueue_shared_file($name, $path, $deps = array(), $localize_var = null, $localize_array = array()) {
 			$is_script = false;
 			$deps = (empty($deps)) ? array() : $deps;
-			$url = INBOUDNOW_SHARED_URLPATH . $path;
-			$file = INBOUDNOW_SHARED_PATH . $path;
+			$url = INBOUNDNOW_SHARED_URLPATH . $path;
+			$file = INBOUNDNOW_SHARED_PATH . $path;
 
 			$file_type = strpos($path, '.js');
 			if (!(false === $file_type)) { $is_script = true; }
@@ -160,21 +160,34 @@ if (!class_exists('Inbound_Asset_Loader')) {
 			$wordpress_date_time = date("Y/m/d G:i:s", $time);
 			$inbound_track_include = get_option( 'wpl-main-tracking-ids');
 			$inbound_track_exclude = get_option( 'wpl-main-exclude-tracking-ids');
-			$inbound_localized_data = array('post_id' => $post_id,
-											'ip_address' => $ip_address,
-											'wp_lead_data' => $lead_data_array,
-											'admin_url' => admin_url('admin-ajax.php'),
-											'track_time' => $wordpress_date_time,
-											'post_type' => $post_type,
-											'page_tracking' => $page_tracking,
-											'search_tracking' => $search_tracking,
-											'comment_tracking' => $comment_tracking,
-											'custom_mapping' => $custom_map_values,
-											'inbound_track_exclude' => $inbound_track_exclude,
-											'inbound_track_include' => $inbound_track_include
+
+			/* get variation id */
+			if (class_exists('Landing_Pages_Variations')) {
+				$variation = Landing_Pages_Variations::get_current_variation_id();
+			} else if( function_exists('lp_ab_testing_get_current_variation_id') ) {
+                $variation = lp_ab_testing_get_current_variation_id();
+            }
+
+			$variation = (isset($variation)) ? $variation : 0;
+
+			$inbound_localized_data = array(
+				'post_id' => $post_id,
+				'variation_id' => $variation,
+				'ip_address' => $ip_address,
+				'wp_lead_data' => $lead_data_array,
+				'admin_url' => admin_url('admin-ajax.php'),
+				'track_time' => $wordpress_date_time,
+				'post_type' => $post_type,
+				'page_tracking' => $page_tracking,
+				'search_tracking' => $search_tracking,
+				'comment_tracking' => $comment_tracking,
+				'custom_mapping' => $custom_map_values,
+				'inbound_track_exclude' => $inbound_track_exclude,
+				'inbound_track_include' => $inbound_track_include,
+				'is_admin' => current_user_can( 'manage_options' )
 			);
 
-			return $inbound_localized_data;
+			return apply_filters( 'inbound_analytics_localized_data' , $inbound_localized_data);
 		} // end localize lead data
 
 	} // end class
